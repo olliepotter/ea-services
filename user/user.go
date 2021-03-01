@@ -51,7 +51,7 @@ func CreateUser(c *fiber.Ctx) error {
 	user.RoleID = 0
 	err := db.Create(&user)
 	if err != nil {
-		c.Status(fiber.StatusBadRequest).JSON(&fiber.Map{
+		return c.Status(fiber.StatusBadRequest).JSON(&fiber.Map{
 			"success": false,
 			"error":   err,
 		})
