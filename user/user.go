@@ -49,7 +49,13 @@ func CreateUser(c *fiber.Ctx) error {
 	var user User
 	user.Email = "olliepotter16@gmail.com"
 	user.RoleID = 0
-	db.Create(&user)
+	err := db.Create(&user)
+	if err != nil {
+		c.Status(fiber.StatusBadRequest).JSON(&fiber.Map{
+			"success": false,
+			"error":   err,
+		})
+	}
 	return c.JSON(user)
 }
 
