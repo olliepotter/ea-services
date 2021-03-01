@@ -2,7 +2,6 @@ package user
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/olliepotter/ea-services/eadb"
 
@@ -10,15 +9,8 @@ import (
 	"gorm.io/gorm"
 )
 
-type GormCommon struct {
-	ID        uint           `json:"id" gorm:"primary_key"`
-	CreatedAt time.Time      `json:"created_at"`
-	UpdatedAt time.Time      `json:"updated_at"`
-	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleted_at"`
-}
-
 type User struct {
-	GormCommon
+	eadb.BaseUUID
 	Email  string `json:"email"`
 	RoleID int    `json:"role_id"`
 }
