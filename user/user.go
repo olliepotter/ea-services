@@ -9,21 +9,29 @@ import (
 	"gorm.io/gorm"
 )
 
+// User describes a user object in the database
 type User struct {
 	eadb.BaseUUID
-	Email  string `json:"email"`
-	RoleID int    `json:"role_id"`
+	Email           string `json:"email" gorm:"unique"`
+	EmailVerified   bool   `json:"email_verified"`
+	FirstName       string `json:"first_name"`
+	LastName        string `json:"last_name"`
+	PrimaryRider    int    `json:"primary_rider"`
+	CustomerID      string `json:"customer_id"`
+	EmContactName   string `json:"em_contact_name"`
+	EmContactNumber string `json:"em_contact_number"`
+	RoleID          int    `json:"role_id"`
 }
 
+// HOOK
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 	tx.Model(u).Update("email", "rileypotter17@gmail.com")
 	fmt.Println(u.ID)
 	return
 }
 
+// HOOK
 func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
-	fmt.Println(u)
-	fmt.Println(u.Email)
 	return
 }
 
