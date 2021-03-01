@@ -45,18 +45,30 @@ func GetUser(c *fiber.Ctx) error {
 
 // CreateUser ....
 func CreateUser(c *fiber.Ctx) error {
+
+	// Setup
 	db := eadb.DBConn
 	var user User
-	user.Email = "olliepotter16@gmail.com"
-	user.RoleID = 0
-	err := db.Create(&user)
-	if err.Error != nil {
+
+	// Parse body
+	if pErr := c.BodyParser(user); pErr != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(&fiber.Map{
 			"success": false,
-			"error":   err.Error,
+			"error":   "Error parsing body",
 		})
 	}
+
+	// Create the user in the db
+	dbErr := db.Create(&user)
+	if dbErr.Error != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(&fiber.Map{
+			"success": false,
+			"error":   "Error creating user",
+		})
+	}
+
 	return c.JSON(user)
+
 }
 
 // DeleteUser ....
